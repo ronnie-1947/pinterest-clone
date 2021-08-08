@@ -1,0 +1,25 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html{
+  font-size: 62.5%;
+  @include respond(laptop) {
+    //width <1024
+    font-size: 56.25%;
+  }
+  @include respond(tablet) {
+    // width < 768
+    font-size: 50%;
+  }
+}
+
+body{
+  ::-webkit-scrollbar{
+    display: none;
+  }
+}

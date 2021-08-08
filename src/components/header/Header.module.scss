@@ -1,0 +1,121 @@
+@import "../../sass/abstract/mixin";
+
+@mixin btn {
+    padding: 1.5rem 2rem;
+    border-radius: 5rem;
+    cursor: pointer;
+}
+
+.header {
+    padding: 1.5rem 3rem;
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    
+    & > *:not(:last-child) {
+        margin-right: 1rem;
+    }
+    
+    // ---- Logo --------------
+    &__logoWrapper {
+        padding: 1rem;
+        border-radius: 50%;
+        height: 5rem;
+        width: 5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.2s;
+        
+        &:hover {
+            background-color: rgba(128, 128, 128, 0.137);
+        }
+    }
+    
+    &__logo {
+        color: #e60023;
+    }
+    
+    // ---- Buttons --------------
+    &__homeBtn {
+        background-color: rgb(17, 17, 17);
+        color: white;
+        @include btn;
+    }
+    
+    &__followingBtn {
+        font-weight: 700;
+        @include btn;
+        transition: all 0.2s ease-in;
+        @include respond (tablet) {
+            display: none;
+        }
+        
+        &:hover {
+            background-color: rgb(233, 233, 233);
+        }
+    }
+    
+    // ---- Search --------------
+    &__search {
+        background-color: rgb(233, 233, 233);
+        padding: 1rem;
+        border-radius: 3rem;
+        flex: 1;
+        display: flex;
+        @include respond (tablet) {
+            padding: 1rem 5px;
+        }
+        
+        &Logo{
+            color: rgb(65, 65, 65);
+        }
+        
+        span{
+            margin-right: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+        }
+        
+        form{
+            flex: 1;
+            
+            input{
+                width: 100%;
+                background-color: transparent;
+                border: none;
+                padding: .5rem;
+                color: rgb(65, 65, 65);
+                font-size: 1.6rem;
+                letter-spacing: 1px;
+                @include respond (tablet) {
+                    padding: 0;
+                }
+                
+                &::placeholder{
+                    letter-spacing: 1px;
+                }
+    
+                &:focus{
+                    outline: none;
+                }
+            }
+        }
+    }
+
+    // ---- Icons --------------
+
+    &__icons{
+
+        display: flex;
+        & > *:not(:last-child) {
+            margin-right: 2rem;
+        }
+
+        .icon{
+            color: grey;
+        }
+    }
+}
