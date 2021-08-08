@@ -1,0 +1,12 @@
+.container {
+    
+    display: inline-flex;
+    margin-bottom: 2rem;
+
+    img{
+        width: 100%;
+        object-fit: cover;
+        border-radius: 2rem;
+        cursor: zoom-in;
+    }
+}

@@ -1,10 +1,26 @@
-import React from 'react'
 import styles from './Header.module.scss'
 import {Link} from 'react-router-dom'
 
 import { Pinterest , NotificationImportant, Textsms, Face, KeyboardArrowDown, SearchSharp} from '@material-ui/icons'
 
-const Header = () => {
+interface Props {
+    getImages: (query:string)=>void
+    setPage: any
+    setSearch:any
+    search: string
+}
+
+const Header = ({getImages, search, setPage, setSearch}:Props) => {
+
+    
+
+    const submitHandler = (e:any)=>{
+        e.preventDefault()
+        if(search.length<1)return
+        setPage(1)
+        getImages(search)
+    }
+
     return (
         <header className={styles.header}>
             <span className={styles.header__logoWrapper}>
@@ -18,8 +34,13 @@ const Header = () => {
                 <span>
                     <SearchSharp className={styles.header__searchLogo} style={{fontSize: '2.5rem'}}/>
                 </span>
-                <form>
-                    <input type="search" placeholder="search"/>
+                <form onSubmit={submitHandler}>
+                    <input value = {search} 
+                    onChange={(e:any)=>{
+                        const regex = /^[\s\d\w]*$/
+                        if(regex.test(e.target.value))setSearch(e.target.value)
+                    }} 
+                    type="search" placeholder="search"/>
                 </form>
             </div>
 
