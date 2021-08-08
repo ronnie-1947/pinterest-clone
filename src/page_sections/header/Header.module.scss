@@ -7,10 +7,14 @@
 }
 
 .header {
-    padding: 1.5rem 3rem;
+    padding: 0 3rem;
+    height: 9rem;
     display: flex;
     align-items: center;
     width: 100vw;
+    background-color: white;
+    position: sticky;
+    top: 0;
     
     & > *:not(:last-child) {
         margin-right: 1rem;
