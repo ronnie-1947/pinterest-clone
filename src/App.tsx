@@ -15,41 +15,69 @@ interface Pic {
 const App = () => {
 
   const [pics, setPics] = useState<any>([])
-  const [hiddenSearch, setHiddenSearch] = useState('')
+  const [hiddenSearch, setHiddenSearch] = useState('random')
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
-
+  const [frst, setFrst] = useState(true)
 
 
   useEffect(() => {
 
+    (async function () {
+
+      if (!frst) return
+      setLoading(true)
+
+      const result = await unsplash.get(`/search/photos?page=1`, {
+        params: {
+          query: hiddenSearch.length > 0 ? hiddenSearch : 'random',
+          per_page: 50
+        }
+      })
+
+      const pictures: Pic[] = result?.data?.results?.map((img: any) => ({
+        url: img?.urls?.small,
+        id: img?.id,
+        description: img?.description
+      }))
+
+      setPics([...pictures])
+      setFrst(false)
+      setLoading(false)
+    
+    }())
+
+  }, [setLoading, frst, hiddenSearch, setPics])
+
+
+  useEffect(() => {
     window.onscroll = async () => {
-
+      
       if (loading) return
-
       if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 600) {
 
         setLoading(true)
-        
-        const result = await unsplash.get(`/search/photos?page=${page+1}`, {
+
+        const result = await unsplash.get(`/search/photos?page=${page + 1}`, {
           params: {
-            query: hiddenSearch,
+            query: hiddenSearch.length > 0 ? hiddenSearch : 'random',
             per_page: 50
           }
         })
-        
+
         const pictures: Pic[] = result?.data?.results?.map((img: any) => ({
           url: img?.urls?.small,
           id: img?.id,
           description: img?.description
         }))
-        
+
         setPics([...pics, ...pictures])
         setPage(page + 1)
         setLoading(false)
       }
     }
   }, [loading, page, hiddenSearch, pics])
+
 
   return (
     <div className="App">

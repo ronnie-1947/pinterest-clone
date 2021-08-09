@@ -24,7 +24,7 @@ const Header = ({ setPage, setPics, setHiddenSearch }: Props) => {
     const getImages = () => {
         unsplash.get(`/search/photos?page=1`, {
             params: {
-                query: search,
+                query: search?search:'random',
                 per_page: 30
             }
         }).then((res: any) => {
@@ -37,13 +37,12 @@ const Header = ({ setPage, setPics, setHiddenSearch }: Props) => {
             setHiddenSearch(search)
             setPage(1)
         }).catch(error=>{
-            
+
         })
     }
 
     const submitHandler = (e: any) => {
         e.preventDefault()
-        if (search.length < 1) return
         getImages()
     }
 
