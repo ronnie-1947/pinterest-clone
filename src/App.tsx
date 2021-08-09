@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import './App.scss'
 
 import Header from './page_sections/header/Header'
@@ -15,39 +15,46 @@ interface Pic {
 const App = () => {
 
   const [pics, setPics] = useState<any>([])
-  const [search, setSearch] = useState('')
+  const [hiddenSearch, setHiddenSearch] = useState('')
   const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(false)
 
-  const getImages = (query:string)=>{
-    unsplash.get(`/search/photos?page=${page}`, {
-      params: {
-        query,
-        per_page: 50
+
+
+  useEffect(() => {
+
+    window.onscroll = async () => {
+
+      if (loading) return
+
+      if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 600) {
+
+        setLoading(true)
+        
+        const result = await unsplash.get(`/search/photos?page=${page+1}`, {
+          params: {
+            query: hiddenSearch,
+            per_page: 50
+          }
+        })
+        
+        const pictures: Pic[] = result?.data?.results?.map((img: any) => ({
+          url: img?.urls?.small,
+          id: img?.id,
+          description: img?.description
+        }))
+        
+        setPics([...pics, ...pictures])
+        setPage(page + 1)
+        setLoading(false)
       }
-    }).then((res:any)=>{
-      const pictures : Pic[] = res?.data?.results?.map((img:any)=>({
-        url: img?.urls?.small,
-        id: img?.id,
-        description: img?.description
-      }))
-
-      if(page === 1){
-        setPics([...pictures])
-        return
-      }
-      
-      setPics([...pics, ...pictures])
-    })
-  }
-
-  useEffect(()=>{
-    getImages('paris')
-  },[])
+    }
+  }, [loading, page, hiddenSearch, pics])
 
   return (
     <div className="App">
-      <Header search={search} setPage={setPage} setSearch={setSearch} getImages={getImages}/>
-      <MainBoard pics={pics}/>
+      <Header setHiddenSearch={setHiddenSearch} setPage={setPage} setPics={setPics} />
+      <MainBoard pics={pics} />
     </div>
   )
 }

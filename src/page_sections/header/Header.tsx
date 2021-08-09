@@ -1,24 +1,50 @@
+import { useState } from 'react'
 import styles from './Header.module.scss'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import { Pinterest , NotificationImportant, Textsms, Face, KeyboardArrowDown, SearchSharp} from '@material-ui/icons'
+import unsplash from '../../lib/axios'
+import { Pinterest, NotificationImportant, Textsms, Face, KeyboardArrowDown, SearchSharp } from '@material-ui/icons'
 
 interface Props {
-    getImages: (query:string)=>void
     setPage: any
-    setSearch:any
-    search: string
+    setPics:any
+    setHiddenSearch:any
 }
 
-const Header = ({getImages, search, setPage, setSearch}:Props) => {
+interface Pic {
+    url: string
+    id: string
+    description: string
+}
 
-    
+const Header = ({ setPage, setPics, setHiddenSearch }: Props) => {
 
-    const submitHandler = (e:any)=>{
+    const [search, setSearch] = useState('')
+
+    const getImages = () => {
+        unsplash.get(`/search/photos?page=1`, {
+            params: {
+                query: search,
+                per_page: 30
+            }
+        }).then((res: any) => {
+            const pictures: Pic[] = res?.data?.results?.map((img: any) => ({
+                url: img?.urls?.small,
+                id: img?.id,
+                description: img?.description
+            }))
+            setPics([...pictures])
+            setHiddenSearch(search)
+            setPage(1)
+        }).catch(error=>{
+            
+        })
+    }
+
+    const submitHandler = (e: any) => {
         e.preventDefault()
-        if(search.length<1)return
-        setPage(1)
-        getImages(search)
+        if (search.length < 1) return
+        getImages()
     }
 
     return (
@@ -32,30 +58,30 @@ const Header = ({getImages, search, setPage, setSearch}:Props) => {
 
             <div className={styles.header__search}>
                 <span>
-                    <SearchSharp className={styles.header__searchLogo} style={{fontSize: '2.5rem'}}/>
+                    <SearchSharp className={styles.header__searchLogo} style={{ fontSize: '2.5rem' }} />
                 </span>
                 <form onSubmit={submitHandler}>
-                    <input value = {search} 
-                    onChange={(e:any)=>{
-                        const regex = /^[\s\d\w]*$/
-                        if(regex.test(e.target.value))setSearch(e.target.value)
-                    }} 
-                    type="search" placeholder="search"/>
+                    <input value={search}
+                        onChange={(e: any) => {
+                            const regex = /^[\s\d\w]*$/
+                            if (regex.test(e.target.value)) setSearch(e.target.value)
+                        }}
+                        type="search" placeholder="search" />
                 </form>
             </div>
 
             <div className={styles.header__icons}>
                 <span>
-                    <NotificationImportant style={{fontSize: '2rem'}} className={styles.icon}/>
+                    <NotificationImportant style={{ fontSize: '2rem' }} className={styles.icon} />
                 </span>
                 <span>
-                    <Textsms style={{fontSize: '2rem'}} className={styles.icon}/>
+                    <Textsms style={{ fontSize: '2rem' }} className={styles.icon} />
                 </span>
                 <span>
-                    <Face style={{fontSize: '2rem'}} className={styles.icon}/>
+                    <Face style={{ fontSize: '2rem' }} className={styles.icon} />
                 </span>
                 <span>
-                    <KeyboardArrowDown style={{fontSize: '2rem'}} className={styles.icon}/>
+                    <KeyboardArrowDown style={{ fontSize: '2rem' }} className={styles.icon} />
                 </span>
             </div>
 

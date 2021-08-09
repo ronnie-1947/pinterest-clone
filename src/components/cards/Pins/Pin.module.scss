@@ -1,11 +1,11 @@
 .container {
     
     display: inline-flex;
-    margin-bottom: 2rem;
+    height: min-content;
 
     img{
         width: 100%;
-        object-fit: cover;
+        object-fit: contain;
         border-radius: 2rem;
         cursor: zoom-in;
     }

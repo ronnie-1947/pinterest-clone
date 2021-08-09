@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from './Pin.module.scss'
-
 interface Props {
     url: string
     id: string
