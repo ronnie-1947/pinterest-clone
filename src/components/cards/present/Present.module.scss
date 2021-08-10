@@ -1,7 +1,13 @@
-.board__img{
+@import '../../../sass/abstract/mixin';
 
+.board__img{
     max-height: 80%;
+    max-width: 90%;
     object-fit: contain;
     border-radius: 2rem;
     border: 2rem solid white;
+    
+    @include respond(phone){
+        border: 1rem solid white;
+    }
 }
