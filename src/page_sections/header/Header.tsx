@@ -31,7 +31,8 @@ const Header = ({ setPage, setPics, setHiddenSearch }: Props) => {
             const pictures: Pic[] = res?.data?.results?.map((img: any) => ({
                 url: img?.urls?.small,
                 id: img?.id,
-                description: img?.description
+                description: img?.description,
+                regular_url: img?.urls?.regular
             }))
             setPics([...pictures])
             setHiddenSearch(search)

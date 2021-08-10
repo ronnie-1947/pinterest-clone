@@ -38,6 +38,7 @@ const App = () => {
       const pictures: Pic[] = result?.data?.results?.map((img: any) => ({
         url: img?.urls?.small,
         id: img?.id,
+        regular_url: img?.urls?.regular,
         description: img?.description
       }))
 
@@ -67,6 +68,7 @@ const App = () => {
 
         const pictures: Pic[] = result?.data?.results?.map((img: any) => ({
           url: img?.urls?.small,
+          regular_url: img?.urls?.regular,
           id: img?.id,
           description: img?.description
         }))

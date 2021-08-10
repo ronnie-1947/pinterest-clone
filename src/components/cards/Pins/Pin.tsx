@@ -3,14 +3,16 @@ import styles from './Pin.module.scss'
 interface Props {
     url: string
     id: string
+    regular_url:string
     description: string
+    presentHandler: (url:string)=>void
 }
 
 
-const Pin = ({url, id, description}:Props) => {
+const Pin = ({url, regular_url, presentHandler}:Props) => {
 
     return (
-        <div className={styles.container}>
+        <div onClick={()=>presentHandler(regular_url)} className={styles.container}>
             <img
                 src={url}
                 alt="pin img"
